@@ -1,4 +1,4 @@
-package com.finaxis.finaxis;
+package com.finaxis.finaxis.app;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
