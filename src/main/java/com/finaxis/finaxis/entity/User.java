@@ -24,7 +24,7 @@ public class User {
     private String username;
 
     @Column(name = "passcode", nullable = false)
-    private Long passcode;
+    private String passcode;
 
     @Column(name = "phone_number", nullable = false, unique = true)
     private String phoneNumber;
@@ -41,8 +41,14 @@ public class User {
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Account> accounts = new ArrayList<>();
 
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
     @PreUpdate
     protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
     }
 }
