@@ -1,6 +1,8 @@
 package com.finaxis.finaxis.controller;
 
 import com.finaxis.finaxis.model.ResponseModel;
+import com.finaxis.finaxis.model.authentication.AuthenticationResponseModel;
+import com.finaxis.finaxis.model.authentication.LoginRequestModel;
 import com.finaxis.finaxis.model.authentication.RegisterRequestModel;
 import com.finaxis.finaxis.services.AuthenticationService;
 import jakarta.validation.Valid;
@@ -15,15 +17,17 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationService authenticationService;
 
-    @CrossOrigin
     @PostMapping("/register")
-    public ResponseEntity<ResponseModel> register(@Valid @RequestBody RegisterRequestModel requestModel) {
+    public ResponseEntity<AuthenticationResponseModel> register(@Valid @RequestBody RegisterRequestModel requestModel) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(ResponseModel.builder()
-                        .status(HttpStatus.CREATED)
-                        .success(true)
-                        .data(authenticationService.register(requestModel))
-                        .build());
+                .body(authenticationService.register(requestModel));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthenticationResponseModel> login(@Valid @RequestBody LoginRequestModel request) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(authenticationService.login(request));
     }
 }
