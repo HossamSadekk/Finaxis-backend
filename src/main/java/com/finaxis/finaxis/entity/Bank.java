@@ -1,5 +1,6 @@
 package com.finaxis.finaxis.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -37,6 +38,7 @@ public class Bank {
     @Column(nullable = false)
     private LocalDateTime updatedAt = LocalDateTime.now();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "bank", orphanRemoval = true)
     private List<BankAccount> bankAccounts = new ArrayList<>();
 
