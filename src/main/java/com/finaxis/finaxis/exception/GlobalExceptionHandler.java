@@ -5,7 +5,11 @@ import jakarta.persistence.EntityExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.nio.file.AccessDeniedException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -29,4 +33,37 @@ public class GlobalExceptionHandler {
                 .build();
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseBody
+    public ResponseEntity<ErrorResponseModel> handleAccessDeniedException(AccessDeniedException ex) {
+        ErrorResponseModel errorResponse = ErrorResponseModel.builder()
+                .status(HttpStatus.FORBIDDEN)
+                .message("You do not have permission to access this resource.")
+                .success(false)
+                .build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(AccountAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponseModel> handleAccountAlreadyExists(AccountAlreadyExistsException ex) {
+        ErrorResponseModel errorResponse = new ErrorResponseModel(
+                HttpStatus.CONFLICT,
+                ex.getMessage(),
+                false
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+    }
+
+    @ExceptionHandler(UsernameAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponseModel> handleUsernameAlreadyExists(UsernameAlreadyExistsException ex) {
+        ErrorResponseModel errorResponse = new ErrorResponseModel(
+                HttpStatus.CONFLICT,
+                ex.getMessage(),
+                false
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+    }
+
 }

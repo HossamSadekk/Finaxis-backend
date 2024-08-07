@@ -1,15 +1,12 @@
 package com.finaxis.finaxis.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-@Data
-@Builder
+@Getter
 @AllArgsConstructor
-public class ErrorResponseModel {
+public class GenericResponseModel {
     private HttpStatus status;
     private String message;
-    private boolean success;
 }
