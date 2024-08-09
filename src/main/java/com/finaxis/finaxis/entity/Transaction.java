@@ -37,6 +37,9 @@ public class Transaction {
     @Column(name = "note")
     private String note;
 
+    @Column(name = "amount", nullable = false)
+    private Double amount;
+
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
