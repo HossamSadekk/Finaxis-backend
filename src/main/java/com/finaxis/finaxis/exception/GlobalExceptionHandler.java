@@ -66,4 +66,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
     }
 
+    @ExceptionHandler(InsufficientFundsException.class)
+    public ResponseEntity<String> handleInsufficientFunds(InsufficientFundsException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
 }
