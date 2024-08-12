@@ -1,8 +1,10 @@
 package com.finaxis.finaxis.services.imp;
 
 import com.finaxis.finaxis.entity.Account;
+import com.finaxis.finaxis.entity.Transaction;
 import com.finaxis.finaxis.model.moenyRequest.MoneyRequestResponseModel;
 import com.finaxis.finaxis.repository.AccountRepository;
+import com.finaxis.finaxis.repository.TransactionsRepository;
 import com.finaxis.finaxis.services.AccountService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,8 @@ import java.util.List;
 public class AccountServiceImpl implements AccountService {
     @Autowired
     AccountRepository accountRepository;
+    @Autowired
+    TransactionsRepository transactionsRepository;
 
     @Override
     public boolean isUsernameTaken(String username) {
@@ -40,6 +44,11 @@ public class AccountServiceImpl implements AccountService {
                 receiverAccount.getUsername(),
                 receiverAccount.getCardNumber()
         );
+    }
+
+    @Override
+    public List<Transaction> getTransactions(Long accountId) {
+        return transactionsRepository.findCompletedTransactionsByAccountId(accountId);
     }
 
 }

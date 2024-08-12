@@ -1,5 +1,6 @@
 package com.finaxis.finaxis.controller;
 
+import com.finaxis.finaxis.entity.Transaction;
 import com.finaxis.finaxis.entity.User;
 import com.finaxis.finaxis.model.moenyRequest.MoneyRequestResponseModel;
 import com.finaxis.finaxis.services.AccountService;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -27,4 +30,11 @@ public class AccountController {
     public ResponseEntity<MoneyRequestResponseModel> getRequestDetails(@RequestParam String username, @AuthenticationPrincipal User user) {
         return ResponseEntity.ok(accountService.getRequestDetails(user.getId(), username));
     }
+
+    @GetMapping("/completed-transaction")
+    public ResponseEntity<List<Transaction>> getCompletedTransactions(@RequestParam("accountId") Long accountId) {
+        List<Transaction> transactions = accountService.getTransactions(accountId);
+        return ResponseEntity.ok(transactions);
+    }
+
 }
