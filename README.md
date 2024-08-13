@@ -49,7 +49,30 @@ The following diagram illustrates the database schema for the **Finaxis** projec
 
 ![Database Schema](screenshots/scheme.png)
 
+## 🚀 Future Plans
 
+In the coming updates, we plan to enhance the project with the following features:
+
+1. **New Endpoints:** Introducing new API endpoints to support features like transaction history, user notifications, and advanced analytics.
+
+2. **Security Upgrades:** Implementing additional security measures to safeguard against vulnerabilities, enhance data protection, and ensure compliance with industry standards.
+
+3. **Documentation and Testing:** Improving API documentation and adding comprehensive tests to ensure reliability and ease of use for developers.
+
+## 🛠 Built With
+
+**Finaxis** utilizes the following technologies and tools:
+
+- **[Spring Boot](https://spring.io/projects/spring-boot)** - Framework for building production-ready Spring-based applications with minimal configuration.
+- **[Spring Security](https://spring.io/projects/spring-security)** - Provides comprehensive security services for Java applications.
+- **[Spring Data JPA](https://spring.io/projects/spring-data-jpa)** - Simplifies data access with JPA, providing an easier way to interact with relational databases.
+- **[Lombok](https://projectlombok.org/)** - Java library that helps to reduce boilerplate code using annotations.
+- **[Java JWT](https://github.com/auth0/java-jwt)** - Library for creating and verifying JSON Web Tokens (JWTs).
+- **[MySQL Connector/J](https://dev.mysql.com/downloads/connector/j/)** - JDBC driver for connecting to MySQL databases.
+- **[JUnit](https://junit.org/junit4/)** - Framework for writing and running tests in Java.
+- **[Maven](https://maven.apache.org/)** - Build automation tool used for managing project dependencies and build processes.
+
+These tools and libraries form the backbone of the **Finaxis** backend, providing a robust foundation for building scalable and secure web applications.
 
 
 
