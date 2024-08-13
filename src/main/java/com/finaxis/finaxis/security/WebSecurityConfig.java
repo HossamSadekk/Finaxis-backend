@@ -35,7 +35,7 @@ public class WebSecurityConfig {
                         .configurationSource(corsConfigurationSource())
                 )
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("auth/**").permitAll()
+                        .requestMatchers("/auth/register", "/auth/login").permitAll()
                         .requestMatchers("/api/me").authenticated()
                         .anyRequest().authenticated()
                 )
