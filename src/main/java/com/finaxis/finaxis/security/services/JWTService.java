@@ -4,6 +4,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.finaxis.finaxis.entity.User;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,8 @@ public class JWTService {
     private int expiryInSeconds;
     private Algorithm algorithm;
     private static final String USERNAME_KEY = "USERNAME";
+    @Autowired
+    private TokenBlacklistService tokenBlacklistService;
 
     @PostConstruct
     private void postConstruct() {
@@ -33,6 +37,20 @@ public class JWTService {
                 .sign(algorithm);
     }
 
+    public String getTokenFromRequest(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
+
+    public boolean validateToken(String token) {
+        if (tokenBlacklistService.isTokenBlacklisted(token)) {
+            return false;
+        }
+        return true;
+    }
 
     public String getUsername(String token) {
         return JWT.decode(token).getClaim(USERNAME_KEY).asString();

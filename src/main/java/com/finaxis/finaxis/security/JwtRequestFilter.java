@@ -3,7 +3,9 @@ package com.finaxis.finaxis.security;
 import com.finaxis.finaxis.entity.User;
 import com.finaxis.finaxis.repository.UserRepository;
 import com.finaxis.finaxis.security.services.JWTService;
+import com.finaxis.finaxis.security.services.TokenBlacklistService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -26,6 +28,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private final JWTService jwtService;
     private final UserDetailsService userDetailsService;
     private final UserRepository userRepository;
+    @Autowired
+    private TokenBlacklistService tokenBlacklistService;
 
     @Override
     protected void doFilterInternal(
@@ -37,12 +41,19 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         final String jwt;
         final String username;
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-        jwt = authHeader.substring(7);
-        username = jwtService.getUsername(jwt);
-        System.out.println("user" + username);
+
+        jwt = authHeader.substring(7);  // Extract the JWT token
+        username = jwtService.getUsername(jwt);  // Extract the username from the token
+
+        // Check if the token is blacklisted
+        if (tokenBlacklistService.isTokenBlacklisted(jwt)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);  // Return 401 Unauthorized
+            return;
+        }
+
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             Optional<User> user = userRepository.findByUsernameIgnoreCase(username);
             if (user.isPresent()) {
